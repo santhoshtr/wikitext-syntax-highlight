@@ -1,0 +1,73 @@
+<head>
+  <meta charset="utf-8" />
+  <title>tree-sitter Wikitext</title>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark light" />
+  <link rel="stylesheet" href="theme.css" />
+</head>
+
+<body>
+  <main>
+    <pre class="container markup" id="markup">
+      {{Infobox oxygen}} '''Oxygen''' is a [[chemical element]]. It has the
+      symbol '''O''' and [[atomic number]] 8. It is a colorless, odorless, and
+      tasteless gas at room temperature. Oxygen is part of the air we breathe.
+      It makes up about 21% of [[Atmosphere of Earth|Earth’s atmosphere]]. It is
+      the third most common [[chemical element|element]] in the [[universe]],
+      after [[hydrogen]] and [[helium]]. Oxygen is part of the [[Group 16
+      element|chalcogen]] [[group (periodic table)|group]] on the [[periodic
+      table]]. Oxygen is very reactive, meaning it easily combines with other
+      elements. It often forms [[oxide]]s, like [[iron oxide]] (rust) or
+      [[carbon dioxide]] (CO₂). It supports [[combustion]], which means it helps
+      things burn, but it does not burn by itself. In its most common form,
+      oxygen exists as a diatomic molecule (O₂), meaning two oxygen atoms are
+      joined together. There is also a special form called ozone (O₃), made of
+      three oxygen atoms. [[Ozone]] is more reactive than normal oxygen and
+      helps protect [[Earth]] by blocking harmful [[Ultraviolet
+      light|ultraviolet (UV) rays]] from the Sun. Oxygen supports [[Cellular
+      respiration|respiration]], the process living things use to turn food into
+      energy.
+    </div>
+  </main>
+  <script type="module">
+    import WikitextHighlighter from "./wikitext-highlight.js";
+
+    document.addEventListener("DOMContentLoaded", async function () {
+      const container = document.getElementById("markup");
+      const highligher = new WikitextHighlighter(container, {});
+      await highligher.highlight();
+    });
+  </script>
+  <style>
+    :root {
+      --font-monospace: "JetBrains Mono", ui-monospace, SFMono-Regular, SF Mono,
+        Menlo, Consolas, Liberation Mono, monospace;
+    }
+    .container {
+      margin: auto;
+      display: grid;
+      width: min(100vw, 800px);
+      height: 80vh;
+    }
+    .markup {
+      font-family: var(--font-monospace);
+      font-size: 1em;
+      grid-area: 1 / 1;
+      line-height: 1.5;
+      padding: 0.5em;
+      caret-color: white;
+      margin: 0;
+      overflow: auto;
+      white-space: pre;
+      tab-size: 2;
+      border: 1px;
+      outline: 1px;
+      height: calc(100% - 2rem);
+      width: calc(100% - 2rem);
+      box-sizing: border-box;
+      overflow: auto;
+    }
+  </style>
+</body>

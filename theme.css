@@ -34,9 +34,10 @@
 }
 
 @layer syntax-highlighting {
-	.markup {
+	.wikitext-markup {
 		background-color: var(--surface0);
 		color: var(--text);
+		border: 1px solid var(--overlay1);
 	}
 	::highlight(comment) {
 		color: var(--overlay1);

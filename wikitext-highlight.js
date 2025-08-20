@@ -115,14 +115,71 @@ async function getWikiTextParser() {
 	return parser;
 }
 
-class WikiTextHighlighter {
-	constructor(highlightEl, opts) {
-		this.highlightEl = highlightEl;
-		if (!this.highlightEl) {
-			throw new Error("Editor element is null or invalid");
-		}
+class WikiTextHighlighter extends HTMLElement {
+	constructor() {
+		super();
 		this.parser = null;
 		this.tree = null;
+		this.query = null;
+	}
+
+	connectedCallback() {
+		this.classList.add("wikitext-markup");
+		this.contentEditable = "plaintext-only";
+		this.addEventListener("input", this.handleInput.bind(this));
+		this.addEventListener("keydown", this.handleKeydown.bind(this));
+		this.addEventListener("paste", this.handlePaste.bind(this));
+		this.highlight();
+	}
+
+	disconnectedCallback() {
+		this.removeEventListener("input", this.handleInput.bind(this));
+		this.removeEventListener("keydown", this.handleKeydown.bind(this));
+		this.removeEventListener("paste", this.handlePaste.bind(this));
+	}
+
+	handleKeydown(e) {
+		// Prevent formatting shortcuts
+		if (e.ctrlKey || e.metaKey) {
+			const forbiddenKeys = ["b", "i", "u", "k"]; // bold, italic, underline, link
+			if (forbiddenKeys.includes(e.key.toLowerCase())) {
+				e.preventDefault();
+				return false;
+			}
+		}
+	}
+
+	handlePaste(e) {
+		e.preventDefault();
+		// Get plain text from clipboard
+		const text = (e.clipboardData || window.clipboardData).getData(
+			"text/plain",
+		);
+		document.execCommand("insertText", false, text);
+	}
+
+	handleInput() {
+		this.highlight();
+	}
+
+	static get observedAttributes() {
+		return ["value"];
+	}
+
+	attributeChangedCallback(name, oldValue, newValue) {
+		if (name === "value" && newValue !== oldValue) {
+			this.textContent = newValue;
+			this.highlight();
+		}
+	}
+
+	get value() {
+		return this.textContent;
+	}
+
+	set value(text) {
+		this.textContent = text;
+		this.highlight();
 	}
 
 	async highlight() {
@@ -130,7 +187,13 @@ class WikiTextHighlighter {
 			this.parser = await getWikiTextParser();
 			this.query = this.parser.language.query(HIGHLIGHT_QUERY);
 		}
-		const wikitext = this.highlightEl.innerText;
+
+		// Clear existing highlights
+		CSS.highlights.clear();
+
+		const wikitext = this.innerText;
+		if (!wikitext) return;
+
 		this.tree = this.parser.parse(wikitext);
 		this.runTreeQuery();
 	}
@@ -138,8 +201,8 @@ class WikiTextHighlighter {
 	markRanges(ranges) {
 		for (const range of ranges) {
 			const r = new Range();
-			r.setStart(this.highlightEl.firstChild, range.startIndex);
-			r.setEnd(this.highlightEl.firstChild, range.endIndex);
+			r.setStart(this.firstChild, range.startIndex);
+			r.setEnd(this.firstChild, range.endIndex);
 			const highlightName = range.name.replaceAll(".", "-");
 			if (CSS.highlights.get(highlightName)) {
 				const highlight = CSS.highlights.get(highlightName);
@@ -170,5 +233,7 @@ class WikiTextHighlighter {
 		}
 	}
 }
+
+customElements.define("wikitext-highlighter", WikiTextHighlighter);
 
 export default WikiTextHighlighter;

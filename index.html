@@ -10,11 +10,15 @@
 
 <body>
   <main>
-    <pre class="container markup" id="markup">
+    <p>
+      Edit or past wikitext markup in the below editable area. It will get
+      syntax highlighted.
+    </p>
+    <wikitext-highlighter class="container" id="wikitext-markup">
       {{Infobox oxygen}} '''Oxygen''' is a [[chemical element]]. It has the
       symbol '''O''' and [[atomic number]] 8. It is a colorless, odorless, and
       tasteless gas at room temperature. Oxygen is part of the air we breathe.
-      It makes up about 21% of [[Atmosphere of Earth|Earth’s atmosphere]]. It is
+      It makes up about 21% of [[Atmosphere of Earth|Earth's atmosphere]]. It is
       the third most common [[chemical element|element]] in the [[universe]],
       after [[hydrogen]] and [[helium]]. Oxygen is part of the [[Group 16
       element|chalcogen]] [[group (periodic table)|group]] on the [[periodic
@@ -29,15 +33,14 @@
       light|ultraviolet (UV) rays]] from the Sun. Oxygen supports [[Cellular
       respiration|respiration]], the process living things use to turn food into
       energy.
-    </div>
+    </wikitext-highlighter>
   </main>
   <script type="module">
     import WikitextHighlighter from "./wikitext-highlight.js";
 
     document.addEventListener("DOMContentLoaded", async function () {
-      const container = document.getElementById("markup");
-      const highligher = new WikitextHighlighter(container, {});
-      await highligher.highlight();
+      // The web component will automatically handle highlighting when connected
+      console.log("WikiText highlighter loaded");
     });
   </script>
   <style>
@@ -51,7 +54,7 @@
       width: min(100vw, 800px);
       height: 80vh;
     }
-    .markup {
+    .wikitext-markup {
       font-family: var(--font-monospace);
       font-size: 1em;
       grid-area: 1 / 1;

@@ -125,10 +125,7 @@ class WikiTextHighlighter extends HTMLElement {
 
 	connectedCallback() {
 		this.classList.add("wikitext-markup");
-		this.contentEditable = "plaintext-only";
-		this.addEventListener("input", this.handleInput.bind(this));
-		this.addEventListener("keydown", this.handleKeydown.bind(this));
-		this.addEventListener("paste", this.handlePaste.bind(this));
+		this.updateEditableState();
 		this.highlight();
 	}
 
@@ -136,6 +133,22 @@ class WikiTextHighlighter extends HTMLElement {
 		this.removeEventListener("input", this.handleInput.bind(this));
 		this.removeEventListener("keydown", this.handleKeydown.bind(this));
 		this.removeEventListener("paste", this.handlePaste.bind(this));
+	}
+
+	updateEditableState() {
+		const isEditable = this.hasAttribute("editable");
+
+		if (isEditable) {
+			this.contentEditable = "plaintext-only";
+			this.addEventListener("input", this.handleInput.bind(this));
+			this.addEventListener("keydown", this.handleKeydown.bind(this));
+			this.addEventListener("paste", this.handlePaste.bind(this));
+		} else {
+			this.contentEditable = "false";
+			this.removeEventListener("input", this.handleInput.bind(this));
+			this.removeEventListener("keydown", this.handleKeydown.bind(this));
+			this.removeEventListener("paste", this.handlePaste.bind(this));
+		}
 	}
 
 	handleKeydown(e) {
@@ -163,13 +176,15 @@ class WikiTextHighlighter extends HTMLElement {
 	}
 
 	static get observedAttributes() {
-		return ["value"];
+		return ["value", "editable"];
 	}
 
 	attributeChangedCallback(name, oldValue, newValue) {
 		if (name === "value" && newValue !== oldValue) {
 			this.textContent = newValue;
 			this.highlight();
+		} else if (name === "editable" && oldValue !== newValue) {
+			this.updateEditableState();
 		}
 	}
 
@@ -180,6 +195,18 @@ class WikiTextHighlighter extends HTMLElement {
 	set value(text) {
 		this.textContent = text;
 		this.highlight();
+	}
+
+	get editable() {
+		return this.hasAttribute("editable");
+	}
+
+	set editable(value) {
+		if (value) {
+			this.setAttribute("editable", "");
+		} else {
+			this.removeAttribute("editable");
+		}
 	}
 
 	async highlight() {

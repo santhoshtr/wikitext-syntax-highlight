@@ -11,10 +11,10 @@
 <body>
   <main>
     <p>
-      Edit or past wikitext markup in the below editable area. It will get
+      Edit or paste wikitext markup in the below editable area. It will get
       syntax highlighted.
     </p>
-    <wikitext-highlighter class="container" id="wikitext-markup">
+    <wikitext-highlighter class="container" id="wikitext-markup" editable>
       {{Infobox oxygen}} '''Oxygen''' is a [[chemical element]]. It has the
       symbol '''O''' and [[atomic number]] 8. It is a colorless, odorless, and
       tasteless gas at room temperature. Oxygen is part of the air we breathe.
@@ -63,7 +63,7 @@
       caret-color: white;
       margin: 0;
       overflow: auto;
-      white-space: pre;
+      white-space: pre-wrap;
       tab-size: 2;
       border: 1px;
       outline: 1px;

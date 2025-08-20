@@ -1,6 +1,6 @@
 # WikiText Highlighter Web Component
 
-A web component that provides syntax highlighting for WikiText markup using Tree-sitter. This component creates a text area with real-time syntax highlighting for MediaWiki-style markup, with optional editing capabilities.
+A web component that provides syntax highlighting for WikiText markup using [Tree-sitter](https://github.com/santhoshtr/tree-sitter-wikitext/). This component creates a text area with real-time syntax highlighting for MediaWiki-style markup, with optional editing capabilities.
 
 ## Features
 
@@ -389,24 +389,3 @@ Then add corresponding CSS:
   </wikitext-highlighter>
 </div>
 ```
-
-## License
-
-This project uses Tree-sitter which is licensed under the MIT License.
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
-## Support
-
-For issues and questions:
-
-- Check the browser console for errors
-- Ensure all required files are properly loaded
-- Verify browser compatibility with CSS Highlights API
-- Confirm the `editable` attribute is set when editing functionality is needed
